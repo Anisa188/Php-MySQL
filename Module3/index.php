@@ -61,6 +61,62 @@ case ($age <10):
     
     }
 
-   
+    
+     echo"</br>";
+     echo"</br>";
+     echo"</br>";
+     echo"</br>";
+    
+     //1.Loops
+     //2.While loop
+     $x = 1;
+     while($x <= 5){
+      echo "The numers is : $x  <br>";
+      $x++;
+     }
+    
+   //3.Do while loop
 
-   ?>
+   echo"</br>";
+   echo"</br>";
+   $x = 1;
+   do{
+    echo "The numers is : $x  <br>";
+    $x++;
+   }while($x >= 5);
+
+   //4.For loop
+
+   echo"<br>";
+for($i=0; $i<=5; $i++){
+  echo"Numri eshte $i <br>";
+
+}
+
+echo"<br>";
+
+
+//Foreach loop - only 
+
+echo "<br>";
+
+$cars = array("BMW","VW","Audi","Tesla");
+  foreach($cars as $value){
+    echo "$value <br>";
+  };
+
+echo "<br>";
+
+$age = array("John" => 18, "Michael" => 20, "Joe" => 13);
+ foreach($age as $key => $value){
+    echo "$key = $value  <br>";
+ }
+
+
+
+
+
+
+
+
+   ?> 
