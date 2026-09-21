@@ -95,8 +95,60 @@ function callCounter(){
 callCounter(); //count=1
 callCounter();
 
+echo "<br>";
+echo "<br>";
+echo "<br>";
+
+//Arrays
+
+//$sports = array("football", "basketball", "tennis", "handball");//menyra e pare
+
+$sports = ["Football", "Basketball", "Tennis", "Handball", "Basketball","Kayak"];
 
 
+echo $sports[0];
+echo "<br>";
+echo end($sports);
+echo "<br>";
+echo count($sports);
+echo "<br>";
+
+echo "<br>";
+
+
+array_push($sports, "Skiing");//add an element at the end of the array
+array_unshift($sports, "Golf");//add an element at the beginning 
+
+
+echo "<br>";
+echo count($sports);
+echo "<br>";
+
+for($i = 0; $i < 8; $i++){
+    echo $sports[$i]. "<br>";
+}
+
+
+array_shift($sports); // - removes the first item
+array_pop($sports);  //- removes the last item
+
+
+echo "<br>";
+
+for($i = 0; $i < 6; $i++){
+    echo $sports[$i]. "<br>";
+}
+
+echo "<br>";
+var_dump($sports);
+
+
+$output1 = array_slice($sports,2);
+$output2 = array_slice($sports,0,3);
+echo "<br>";
+var_dump($output1);
+echo "<br>";
+var_dump($output2);
 
 
 
