@@ -26,6 +26,8 @@ echo "</ul>";
 }
 
 
+echo "<br>";
+
 for($i=0;$i< 5; $i++){
     for($j=0;$j<=$i;$j++){
         echo "*";
@@ -34,8 +36,20 @@ for($i=0;$i< 5; $i++){
 }
 
 
+//Associative arrays
+
+$grades = array("Math" => "3", "Art" => "5", "History" => "4","Music" => "4");
 
 
+echo "Art grade is:".$grades["Art"];
+echo "<br>";
+echo "<br>";
+
+
+foreach($grades as $subject => $grade){
+    echo "Subject: " . $subject . ", Grades: "  .$grade;
+    echo "<br>";
+}
 
 
 
