@@ -22,4 +22,7 @@ $sqlquary->execute();
 
 echo "INSERED";
 
+
+
+
 }
