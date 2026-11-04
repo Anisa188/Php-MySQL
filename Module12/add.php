@@ -1,33 +1,37 @@
 
 <?php
+include 'config.php';
 
-include_once('config.php');
+if (isset($_POST['save'])) {
 
-if(isset($_POST['submit'])){
+    $name = trim($_POST['name']);
+    $surname = trim($_POST['surname']);
+    $email = trim($_POST['email']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-$fullname = $_POST['fullname'];
-$email = $_POST['email'];
-$password = $_POST['password'];
-$gender = $_POST['gender'];
-$country = $_POST['country'];
-$message = $_POST['message'];
+    $stmt = mysqli_prepare($conn,
+        "INSERT INTO users (name, surname, email, password)
+         VALUES (?, ?, ?, ?)");
 
-$sql = "INSERT INTO users (fullname, email, password, gender, country, message)
-VALUES (:fullname, :email, :password, :gender, :country, :message)";
+    mysqli_stmt_bind_param(
+        $stmt, "ssss",
+        $name, $surname, $email, $password
+    );
 
-$sqlquery = $conn->prepare($sql);
+    try {
+        mysqli_stmt_execute($stmt);
+        header("Location: dashboard.php?success=1");
+        exit;
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            echo "This email is already registered!";
+        } else {
+            echo "Registration failed. Please try again.";
+        }
+    }
 
-$sqlquery->bindParam(':fullname', $fullname);
-$sqlquery->bindParam(':email', $email);
-$sqlquery->bindParam(':password', $password);
-$sqlquery->bindParam(':gender', $gender);
-$sqlquery->bindParam(':country', $country);
-$sqlquery->bindParam(':message', $message);
-
-$sqlquery->execute();
-
-echo "INSERTED";
-
+} else {
+    header("Location: index.php");
+    exit;
 }
-
 ?>
