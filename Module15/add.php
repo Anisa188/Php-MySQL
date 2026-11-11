@@ -1,18 +1,24 @@
 
+
 <?php
 include "config.php";
 
 if (isset($_POST['save'])) {
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-    $sasia = $_POST['sasia'];
+    
+    $name = trim($_POST['name']);
+    $description = trim($_POST['description']);
+    $sasia = (int) $_POST['sasia'];
 
     $stmt = $conn->prepare(
         "INSERT INTO products (name, description, sasia)
-         VALUES (?, ?, ?)"
+         VALUES (:name, :description, :sasia)"
     );
 
-    $stmt->execute([$name, $description, $sasia]);
+    $stmt->execute([
+        ':name' => $name,
+        ':description' => $description,
+        ':sasia' => $sasia
+    ]);
 
     header("Location: index.php");
     exit;
@@ -22,26 +28,59 @@ if (isset($_POST['save'])) {
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>Add Product</title>
+
     <style>
+
         body {
+            margin: 0;
             font-family: Arial;
             background: #f4f4f4;
-            padding: 40px;
+        }
+
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background: #252b35;
+            color: white;
+            position: fixed;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 10px;
+        }
+
+        .sidebar a:hover {
+            background: #414b5a;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 30px;
         }
 
         .form {
             background: white;
             padding: 25px;
             width: 350px;
-            margin: auto;
             border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
         }
 
         input, textarea {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin-top: 8px;
             box-sizing: border-box;
         }
 
@@ -49,31 +88,79 @@ if (isset($_POST['save'])) {
             background: #008cff;
             color: white;
             border: none;
-            padding: 12px;
+            padding: 12px 20px;
+            margin-top: 20px;
             cursor: pointer;
+            border-radius: 5px;
         }
+
+        .back {
+            display: inline-block;
+            margin-top: 15px;
+            color: #252b35;
+            text-decoration: none;
+        }
+
     </style>
+
 </head>
 
 <body>
 
-<div class="form">
-    <h2>Add Product</h2>
+<div class="sidebar">
 
-    <form method="POST">
-        <label>Name</label>
-        <input type="text" name="name" required>
+    <h2>Hello!</h2>
 
-        <label>Description</label>
-        <textarea name="description" required></textarea>
+    <a href="dashboard.php">Dashboard</a>
+    <a href="index.php">Products</a>
+    <a href="add.php">Add Product</a>
 
-        <label>Sasia</label>
-        <input type="number" name="sasia" required>
+</div>
 
-        <button type="submit" name="save">Save Product</button>
-    </form>
+<div class="content">
 
-    <p><a href="index.php">Back to Dashboard</a></p>
+    <h1>Add Product</h1>
+
+    <div class="form">
+
+        <form method="POST">
+
+            <label>Name</label>
+
+            <input
+                type="text"
+                name="name"
+                required
+            >
+
+            <label>Description</label>
+
+            <textarea
+                name="description"
+                required
+            ></textarea>
+
+            <label>Sasia</label>
+
+            <input
+                type="number"
+                name="sasia"
+                min="0"
+                required
+            >
+
+            <button type="submit" name="save">
+                Save Product
+            </button>
+
+        </form>
+
+        <a href="index.php" class="back">
+            Back to Dashboard
+        </a>
+
+    </div>
+
 </div>
 
 </body>

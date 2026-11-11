@@ -62,13 +62,18 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             color: white;
         }
 
-        .add {
-            background: #008cff;
+        .add, .edit, .delete {
             color: white;
-            padding: 12px 18px;
+            padding: 9px 13px;
             text-decoration: none;
             border-radius: 5px;
+            border: none;
+            cursor: pointer;
         }
+
+        .add { background: #008cff; }
+        .edit { background: #28a745; }
+        .delete { background: #dc3545; }
     </style>
 </head>
 
@@ -93,14 +98,36 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <th>Name</th>
             <th>Description</th>
             <th>Sasia</th>
+            <th>Actions</th>
         </tr>
 
         <?php foreach ($products as $row) { ?>
         <tr>
-            <td><?= $row['Id']; ?></td>
+            <td><?= htmlspecialchars($row['id']); ?></td>
+
             <td><?= htmlspecialchars($row['name']); ?></td>
-            <td><?= htmlspecialchars($row['description']); ?></td>
-            <td><?= $row['sasia']; ?></td>
+
+           <td><?= htmlspecialchars($row['description']); ?></td>
+
+<td><?= htmlspecialchars($row['sasia']); ?></td>
+
+            <td>
+                <a href="edit.php?id=<?= $row['id']; ?>"
+                   class="edit">EDIT</a>
+
+                <form method="POST" action="delete.php"
+                      style="display:inline;"
+                      onsubmit="return confirm('A je i sigurt qe don me fshi?')">
+
+                    <input type="hidden" name="id"
+                           value="<?= $row['id']; ?>">
+
+                    <button type="submit" class="delete">
+                        DELETE
+                    </button>
+
+                </form>
+            </td>
         </tr>
         <?php } ?>
 
