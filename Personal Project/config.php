@@ -1,24 +1,21 @@
-
 <?php
+$conn = new mysqli("localhost", "root", "", "personal_project");
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "db_database";
-
-$conn = mysqli_connect($host, $username, $password, $database);
-
-if (!$conn) {
-    die("Database connection error: " . mysqli_connect_error());
+if ($conn->connect_error) {
+    die("Gabim në lidhje: " . $conn->connect_error);
 }
 
-mysqli_set_charset($conn, "utf8mb4");
-
-
-$check = mysqli_query($conn, "SHOW TABLES LIKE 'students'");
-
-if (!$check || mysqli_num_rows($check) == 0) {
-    die("Tabela students nuk ekziston ne db_database!");
-}
-
+$conn->set_charset("utf8mb4");
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+</body>
+</html>

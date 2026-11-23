@@ -1,94 +1,311 @@
 
-body {
-    background-color: #f1f5f9;
-    font-family: Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+* {
     margin: 0;
-}
-
-.sidebar {
-    width: 240px;
-    height: 100vh;
-    position: fixed;
-    background: #172554;
-    padding: 25px 15px;
+    padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
-.sidebar h3 {
-    color: white;
-    text-align: center;
-    margin-bottom: 40px;
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #252344;
+    background: #fff;
 }
 
-.sidebar a {
-    display: block;
-    padding: 13px 15px;
-    color: #cbd5e1;
-    text-decoration: none;
-    border-radius: 7px;
-    margin-bottom: 10px;
-}
-
-.sidebar a:hover,
-.sidebar a.active {
-    background: #2563eb;
-    color: white;
-}
-
-.main-content {
-    margin-left: 240px;
-    padding: 30px;
-}
-
-.card-box {
+.navbar {
+    height: 85px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8%;
     background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-    height: 100%;
+    box-shadow: 0 2px 15px #00000008;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-.card-box h6 {
-    color: #64748b;
+.logo {
+    font-size: 23px;
+    font-weight: 800;
+    color: #24213e;
+    text-decoration: none;
+}
+
+.logo span {
+    color: #7967f5;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #55536e;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.nav-links a:hover {
+    color: #7967f5;
+}
+
+.nav-links .nav-button {
+    background: #7967f5;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+}
+
+.hero {
+    min-height: 570px;
+    padding: 80px 9%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    background: linear-gradient(120deg, #f5f3ff, #f8faff);
+}
+
+.hero-content {
+    max-width: 580px;
+}
+
+.tagline, .section-label {
+    color: #7967f5;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 5vw, 58px);
+    line-height: 1.2;
+    font-weight: 800;
+    color: #252344;
+}
+
+.hero h1 span {
+    color: #7967f5;
+}
+
+.hero-description {
+    color: #77748e;
+    font-size: 14px;
+    line-height: 2;
+    margin: 22px 0 30px;
+}
+
+.primary-button {
+    display: inline-block;
+    background: #7967f5;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.primary-button:hover {
+    background: #6250dc;
+    transform: translateY(-3px);
+}
+
+.hero-image {
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(145deg, #7967f5, #b0a4ff);
+    border-radius: 35% 65% 60% 40%;
+    display: grid;
+    place-items: center;
+}
+
+.image-card {
+    width: 230px;
+    background: white;
+    padding: 35px 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 40px #25234420;
+}
+
+.image-icon {
+    font-size: 65px;
     margin-bottom: 15px;
 }
 
-.card-box h2 {
-    color: #2563eb;
-    font-weight: bold;
+.image-card h2 {
+    font-size: 22px;
 }
 
-.form-card {
-    max-width: 550px;
+.image-card p {
+    color: #89869f;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.about, .students, .contact {
+    padding: 90px 8%;
+    text-align: center;
+}
+
+.about h2, .students h2, .contact h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.about > p:not(.section-label),
+.contact > p:not(.section-label) {
+    color: #89869f;
+    font-size: 13px;
+    line-height: 2;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.about-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 45px;
+}
+
+.about-card {
+    padding: 35px 25px;
+    border-radius: 15px;
+    background: #f8f7ff;
+    transition: .3s;
+}
+
+.about-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 10px 30px #7967f520;
+}
+
+.about-card span {
+    font-size: 40px;
+}
+
+.about-card h3 {
+    margin: 18px 0 10px;
+}
+
+.about-card p {
+    color: #89869f;
+    font-size: 12px;
+}
+
+.students {
+    background: #f8f7ff;
+}
+
+.student-count {
+    color: #89869f;
+    margin-bottom: 30px;
+    font-size: 13px;
+}
+
+.student-count strong {
+    color: #7967f5;
+}
+
+.student-table {
     background: white;
-    padding: 35px;
-    margin: 40px auto;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    padding: 20px;
+    border-radius: 15px;
+    overflow-x: auto;
+    text-align: left;
+    box-shadow: 0 5px 25px #00000008;
 }
 
-.form-control {
-    padding: 11px;
+table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
 }
 
-table th {
-    white-space: nowrap;
+th {
+    background: #7967f5;
+    color: white;
+    padding: 16px;
+    font-size: 12px;
+    text-align: left;
 }
 
-@media(max-width: 768px) {
-    .sidebar {
-        width: 100%;
+td {
+    padding: 16px;
+    font-size: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover td {
+    background: #f8f7ff;
+}
+
+.contact {
+    background: white;
+}
+
+.contact .primary-button {
+    margin-top: 25px;
+}
+
+footer {
+    background: #211f3b;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+footer h3 {
+    font-size: 23px;
+    margin-bottom: 10px;
+}
+
+footer p {
+    color: #aaa6c6;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+@media(max-width: 750px) {
+    .navbar {
         height: auto;
-        position: relative;
-    }
-
-    .main-content {
-        margin-left: 0;
-        padding: 15px;
-    }
-
-    .form-card {
-        margin: 20px 15px;
         padding: 20px;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .hero-image {
+        width: 260px;
+        height: 260px;
+    }
+
+    .about-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .about, .students, .contact {
+        padding: 60px 20px;
     }
 }

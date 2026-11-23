@@ -1,96 +1,102 @@
 
 <?php
-include 'config.php';
+include "config.php";
 
-$id = $_GET['id'] ?? '';
+$id = (int)($_GET['id'] ?? 0);
 
-if (!ctype_digit((string)$id) || (int)$id <= 0) {
-    die("Invalid student ID");
-}
+$stmt = $conn->prepare(
+    "SELECT * FROM personal_project WHERE id = ?"
+);
+$stmt->bind_param("i", $id);
+$stmt->execute();
 
-$stmt = mysqli_prepare($conn, "SELECT * FROM students WHERE id = ?");
-mysqli_stmt_bind_param($stmt, "i", $id);
-mysqli_stmt_execute($stmt);
-
-$result = mysqli_stmt_get_result($stmt);
-$student = mysqli_fetch_assoc($result);
+$student = $stmt->get_result()->fetch_assoc();
 
 if (!$student) {
-    die("Student not found");
+    die("Student not found!");
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Edit Student</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit Student</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="form-card">
+<nav class="navbar">
+    <a href="index.php" class="logo">Personal<span>Project.</span></a>
+    <div class="nav-links">
+        <a href="index.php">Home</a>
+        <a href="dashboard.php">Dashboard</a>
+        <a href="index.php#students">Students</a>
+    </div>
+</nav>
 
-    <h3 class="mb-4">Update Student</h3>
+<section class="contact">
+    <p class="section-label">STUDENT MANAGEMENT</p>
+    <h2>Edit Student</h2>
+    <p>Update the student's information below.</p>
+</section>
+
+<div class="form-panel">
+
+    <h2>Update Information</h2>
 
     <form action="update.php" method="POST">
 
         <input type="hidden" name="id"
-               value="<?php echo $student['id']; ?>">
+               value="<?= $student['id'] ?>">
 
-        <div class="mb-3">
-            <label class="form-label">First Name</label>
-            <input type="text" name="first_name"
-                   class="form-control"
-                   value="<?php echo htmlspecialchars($student['first_name']); ?>"
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="name"
+                   value="<?= htmlspecialchars($student['name']) ?>"
                    required>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Last Name</label>
-            <input type="text" name="last_name"
-                   class="form-control"
-                   value="<?php echo htmlspecialchars($student['last_name']); ?>"
-                   required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Email</label>
+        <div class="form-group">
+            <label>Email Address</label>
             <input type="email" name="email"
-                   class="form-control"
-                   value="<?php echo htmlspecialchars($student['email']); ?>"
+                   value="<?= htmlspecialchars($student['email']) ?>"
                    required>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Phone</label>
+        <div class="form-group">
+            <label>Phone Number</label>
             <input type="text" name="phone"
-                   class="form-control"
-                   value="<?php echo htmlspecialchars($student['phone']); ?>"
+                   value="<?= htmlspecialchars($student['phone']) ?>"
                    required>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Course</label>
+        <div class="form-group">
+            <label>Course</label>
             <input type="text" name="course"
-                   class="form-control"
-                   value="<?php echo htmlspecialchars($student['course']); ?>"
+                   value="<?= htmlspecialchars($student['course']) ?>"
                    required>
         </div>
 
-        <button type="submit" name="update"
-                class="btn btn-success w-100">
+        <button type="submit" name="update" class="primary-button">
             Update Student
         </button>
 
+        <a href="dashboard.php" class="primary-button"
+           style="background:#77748e;margin-left:8px">
+            Cancel
+        </a>
+
     </form>
-
-    <a href="dashboard.php" class="btn btn-secondary w-100 mt-3">
-        Back to Dashboard
-    </a>
-
 </div>
+
+<br><br>
+
+<footer>
+    <h3>Personal Project.</h3>
+    <p>Student Management System</p>
+</footer>
 
 </body>
 </html>

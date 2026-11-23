@@ -1,146 +1,106 @@
 
 <?php
-include 'config.php';
+include "config.php";
 
-$totalQuery = mysqli_query($conn, "SELECT COUNT(*) AS total FROM students");
-$totalStudents = mysqli_fetch_assoc($totalQuery)['total'];
+$result = $conn->query("SELECT COUNT(*) AS total FROM personal_project");
+$total = $result->fetch_assoc()['total'];
 
-$courseQuery = mysqli_query($conn, "SELECT COUNT(DISTINCT course) AS total FROM students");
-$totalCourses = mysqli_fetch_assoc($courseQuery)['total'];
-
-$result = mysqli_query($conn, "SELECT * FROM students ORDER BY id DESC");
-
-if (!$result) {
-    die("Error: " . mysqli_error($conn));
-}
+$students = $conn->query(
+    "SELECT * FROM personal_project ORDER BY id DESC LIMIT 5"
+);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="sidebar">
-    <h3>Student Panel</h3>
-    <a href="dashboard.php" class="active">Dashboard</a>
-    <a href="#students">All Students</a>
-    <a href="add.php">Add Student</a>
-</div>
+<nav class="navbar">
+    <a href="index.php" class="logo">Personal<span>Project.</span></a>
 
-<div class="main-content">
+    <div class="nav-links">
+        <a href="index.php">Website</a>
+        <a href="dashboard.php">Dashboard</a>
+        <a href="index.php#students">Students</a>
+        <a href="add.php" class="nav-button">Add Student +</a>
+    </div>
+</nav>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2>Dashboard</h2>
-            <p class="text-muted">Welcome to Student Management System</p>
+<section class="students">
+    <p class="section-label">ADMINISTRATION</p>
+    <h2>Admin Dashboard</h2>
+    <p class="student-count">Welcome to your management panel.</p>
+
+    <div class="about-cards">
+        <div class="about-card">
+            <span>👨‍🎓</span>
+            <h3>Total Students</h3>
+            <h2><?= $total ?></h2>
         </div>
 
-        <a href="add.php" class="btn btn-primary">+ Add Student</a>
+        <div class="about-card">
+            <span>📋</span>
+            <h3>Student Records</h3>
+            <h2><?= $total ?></h2>
+        </div>
+
+        <div class="about-card">
+            <span>⚙️</span>
+            <h3>System Status</h3>
+            <h2>Active</h2>
+        </div>
     </div>
 
-    <div class="row g-4 mb-4">
+    <br><br>
+    <div class="student-table">
+        <h2>Recent Students</h2>
 
-        <div class="col-md-4">
-            <div class="card-box">
-                <h6>Total Students</h6>
-                <h2><?php echo $totalStudents; ?></h2>
-            </div>
+        <div style="overflow-x:auto">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Course</th>
+                <th>Actions</th>
+            </tr>
+
+            <?php if ($students->num_rows > 0): ?>
+                <?php while($row = $students->fetch_assoc()): ?>
+                <tr>
+                    <td><?= $row['id'] ?></td>
+                    <td><?= htmlspecialchars($row['name']) ?></td>
+                    <td><?= htmlspecialchars($row['email']) ?></td>
+                    <td><?= htmlspecialchars($row['phone']) ?></td>
+                    <td><?= htmlspecialchars($row['course']) ?></td>
+                    <td>
+                        <a href="edit.php?id=<?= $row['id'] ?>">Edit</a>
+                        |
+                        <a href="index.php#students">View</a>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <tr><td colspan="6">No students found.</td></tr>
+            <?php endif; ?>
+        </table>
         </div>
 
-        <div class="col-md-4">
-            <div class="card-box">
-                <h6>Total Courses</h6>
-                <h2><?php echo $totalCourses; ?></h2>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card-box">
-                <h6>System Status</h6>
-                <h2 class="text-success">Active</h2>
-            </div>
-        </div>
-
+        <br>
+        <a href="add.php" class="primary-button">+ Add New Student</a>
     </div>
+</section>
 
-    <div class="card shadow-sm border-0 p-4" id="students">
-
-        <h4 class="mb-4">All Students</h4>
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Course</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                <?php if(mysqli_num_rows($result) > 0): ?>
-
-                    <?php while($row = mysqli_fetch_assoc($result)): ?>
-
-                    <tr>
-                        <td><?php echo $row['id']; ?></td>
-                        <td><?php echo htmlspecialchars($row['first_name']); ?></td>
-                        <td><?php echo htmlspecialchars($row['last_name']); ?></td>
-                        <td><?php echo htmlspecialchars($row['email']); ?></td>
-                        <td><?php echo htmlspecialchars($row['phone']); ?></td>
-                        <td><?php echo htmlspecialchars($row['course']); ?></td>
-
-                        <td>
-                            <a href="edit.php?id=<?php echo $row['id']; ?>"
-                               class="btn btn-success btn-sm">Edit</a>
-
-                            <form action="delete.php" method="POST"
-                                  class="d-inline"
-                                  onsubmit="return confirm('Are you sure?');">
-
-                                <input type="hidden" name="id"
-                                       value="<?php echo $row['id']; ?>">
-
-                                <button type="submit"
-                                        class="btn btn-danger btn-sm">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-
-                    <?php endwhile; ?>
-
-                <?php else: ?>
-
-                    <tr>
-                        <td colspan="7" class="text-center">
-                            No students found.
-                        </td>
-                    </tr>
-
-                <?php endif; ?>
-
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-
-</div>
+<footer>
+    <h3>Personal Project.</h3>
+    <p>Admin Management System</p>
+</footer>
 
 </body>
 </html>

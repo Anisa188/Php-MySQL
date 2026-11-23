@@ -1,221 +1,115 @@
 
+<?php
+include "config.php";
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+$error = "";
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+if (isset($_POST['submit'])) {
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+    $course = trim($_POST['course']);
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #f8f5ed;
-    color: #263d32;
-}
+    if ($name && $email && $phone && $course) {
+        $stmt = $conn->prepare(
+            "INSERT INTO personal_project
+            (name, email, phone, course)
+            VALUES (?, ?, ?, ?)"
+        );
 
-/* HEADER */
-header {
-    background: #164b3b;
-    color: white;
-    text-align: center;
-    padding: 35px 15px;
-}
+        $stmt->bind_param("ssss", $name, $email, $phone, $course);
 
-header h1 {
-    font-size: 38px;
-    letter-spacing: 4px;
-}
+        if ($stmt->execute()) {
+            header("Location: dashboard.php");
+            exit;
+        }
 
-header p {
-    color: #c9e8d7;
-    margin-top: 8px;
-}
-
-/* NAVIGATION */
-nav {
-    background: #245f4b;
-    padding: 18px;
-    text-align: center;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 18px;
-    font-weight: 600;
-}
-
-nav a:hover {
-    color: #b8e6c9;
-}
-
-/* HERO SECTION */
-.hero {
-    min-height: 430px;
-    background:
-    linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
-    url('https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1600')
-    center/cover no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    padding: 30px;
-}
-
-.hero h2 {
-    font-size: 48px;
-    margin-bottom: 15px;
-}
-
-.hero p {
-    font-size: 18px;
-}
-
-/* CONTAINER */
-.container {
-    width: 90%;
-    max-width: 1150px;
-    margin: 45px auto;
-}
-
-h2 {
-    color: #174c3c;
-    margin-bottom: 25px;
-}
-
-/* PRODUCTS */
-.products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 25px;
-}
-
-.product {
-    background: white;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0,0,0,.08);
-    transition: .3s;
-    text-align: center;
-    padding-bottom: 20px;
-}
-
-.product:hover {
-    transform: translateY(-8px);
-}
-
-.product img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-}
-
-.product h3 {
-    color: #174c3c;
-    margin: 15px;
-}
-
-.product p {
-    padding: 0 15px;
-}
-
-.price {
-    color: #26835c;
-    font-size: 22px;
-    font-weight: bold;
-    margin: 12px;
-}
-
-/* BUTTONS */
-button, .btn, input[type="submit"] {
-    display: inline-block;
-    background: #286b55;
-    color: white;
-    border: none;
-    padding: 13px 24px;
-    border-radius: 30px;
-    text-decoration: none;
-    cursor: pointer;
-    font-size: 15px;
-    transition: .3s;
-}
-
-button:hover, .btn:hover,
-input[type="submit"]:hover {
-    background: #174c3c;
-}
-
-/* FORMS */
-form {
-    background: white;
-    padding: 30px;
-    border-radius: 18px;
-    max-width: 600px;
-    margin: 30px auto;
-    box-shadow: 0 5px 20px rgba(0,0,0,.08);
-}
-
-input, textarea, select {
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0 20px;
-    border: 1px solid #c9ddcf;
-    border-radius: 9px;
-    font-family: inherit;
-}
-
-input:focus, textarea:focus {
-    outline: 2px solid #91c6a5;
-}
-
-/* TABLE */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-th {
-    background: #245f4b;
-    color: white;
-}
-
-th, td {
-    padding: 14px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-}
-
-/* FOOTER */
-footer {
-    background: #164b3b;
-    color: white;
-    text-align: center;
-    padding: 25px;
-    margin-top: 60px;
-}
-
-/* MOBILE */
-@media(max-width: 650px) {
-    header h1 {
-        font-size: 27px;
-    }
-
-    .hero h2 {
-        font-size: 32px;
-    }
-
-    nav a {
-        display: inline-block;
-        margin: 7px;
-    }
-
-    .container {
-        width: 95%;
+        $error = "Something went wrong!";
+    } else {
+        $error = "Please fill in all fields.";
     }
 }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add Student</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.php" class="logo">Personal<span>Project.</span></a>
+    <div class="nav-links">
+        <a href="index.php">Home</a>
+        <a href="dashboard.php">Dashboard</a>
+        <a href="index.php#students">Students</a>
+    </div>
+</nav>
+
+<section class="contact">
+    <p class="section-label">STUDENT REGISTRATION</p>
+    <h2>Add New Student</h2>
+    <p>Complete the form below to register a new student.</p>
+</section>
+
+<div class="form-panel">
+
+    <h2>Student Information</h2>
+
+    <?php if ($error): ?>
+        <p style="color:red;margin-bottom:15px">
+            <?= htmlspecialchars($error) ?>
+        </p>
+    <?php endif; ?>
+
+    <form method="POST">
+
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="name"
+                   placeholder="Enter full name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email"
+                   placeholder="Enter email address" required>
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" name="phone"
+                   placeholder="Enter phone number" required>
+        </div>
+
+        <div class="form-group">
+            <label>Course</label>
+            <input type="text" name="course"
+                   placeholder="Enter course" required>
+        </div>
+
+        <button type="submit" name="submit" class="primary-button">
+            Save Student
+        </button>
+
+        <a href="dashboard.php" class="primary-button"
+           style="background:#77748e;margin-left:8px">
+            Cancel
+        </a>
+
+    </form>
+</div>
+
+<br><br>
+
+<footer>
+    <h3>Personal Project.</h3>
+    <p>Student Management System</p>
+</footer>
+
+</body>
+</html>
