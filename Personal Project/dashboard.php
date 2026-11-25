@@ -97,10 +97,7 @@ $students = $conn->query(
     </div>
 </section>
 
-<footer>
-    <h3>Personal Project.</h3>
-    <p>Admin Management System</p>
-</footer>
+
 
 </body>
 </html>
